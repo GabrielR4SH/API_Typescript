@@ -1,19 +1,10 @@
-# Arquivos do ambiente Node.js
+
 node_modules/
-
-# Arquivos de dependências do Yarn
 yarn.lock
-
-# Arquivos de log
 logs/
-
-# Arquivos de build
 dist/
-
-# Arquivos de configuração local
 .env
 
-# Outros arquivos e diretórios específicos do seu projeto que você deseja ignorar
-# Exemplo:
-# arquivo-secreto.txt
-# diretorio-secreto/
+
+
+
