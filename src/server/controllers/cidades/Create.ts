@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { StatusCodes } from 'http-status-codes';
+import { BAD_REQUEST, StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
 
 interface ICidade{
@@ -22,11 +22,20 @@ export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
   }catch( error){
   
     const yupError = error as yup.ValidationError;
-    return res.json({
-      errors: {
-        default: yupError.message,
-      }
+    const errors: Record<string,string> = {};
+
+    yupError.inner.forEach(error => {
+      if(!error.path) return;
+      errors[error.path] = error.message;
     });
+
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors:{
+        default: errors,
+      }
+    })
   }
+
+  console.log(validatedData);
 };
 
