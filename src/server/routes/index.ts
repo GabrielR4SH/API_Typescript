@@ -12,7 +12,7 @@ router.get('/test', (_,res) => {
 });
 
 
-router.post('/cidades', CidadesController.create);
+router.post('/cidades', CidadesController.createQueryValidation, CidadesController.create);
 //router.post('/cidades', CidadesController.getAll);
 
 

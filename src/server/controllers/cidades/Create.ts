@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import {Request, RequestHandler, Response} from 'express';
 import { BAD_REQUEST, StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
 
@@ -7,18 +7,18 @@ interface ICidade{
 }
 
 //Yup validation 
-const bodyValidation: yup.Schema<ICidade> = yup.object().shape({
+const queryValidation: yup.Schema<ICidade> = yup.object().shape({
   nome: yup.string().required().min(3),
 });
 
+interface IFilter{
+  filter?: string;
+}
 
-export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
-  let validatedData: ICidade| undefined = undefined;
-
+export const createQueryValidation:RequestHandler = async(req, res, next) => {
   try {
-    validatedData = await bodyValidation.validate(req.body);
-    return res.status(StatusCodes.ACCEPTED).json('Created Done');
-    
+    await queryValidation.validate(req.query, {abortEarly: false});
+    next();
   }catch( error){
   
     const yupError = error as yup.ValidationError;
@@ -35,7 +35,12 @@ export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
       }
     })
   }
+};
 
+export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
+  let validatedData: ICidade| undefined = undefined;
   console.log(validatedData);
+
+  return res.send('Create');
 };
 
